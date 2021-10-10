@@ -1,0 +1,11 @@
+{
+    ".*": {
+        "mysql": {
+            "user":     "placeholder, use environment variables",
+            "database": "placeholder, use environment variables",
+            "password": "placeholder, use environment variables",
+            "host":     "placeholder, use environment variables",
+            "multipleStatements": true
+        }
+    }
+}

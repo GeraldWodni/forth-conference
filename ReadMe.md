@@ -30,3 +30,17 @@ Last build the [website-sync Dockerfile](https://github.com/GeraldWodni/kern.js/
 
 I use kubernetes to host the containers, so I cannot present a docker-compose file. Feel free to submit one via pull request. If I remember, I will put a working kubernetes configuration for an existing conference here. As I am dividing the old monolithic conference system as I type this there is no working configuration yet.
 
+## Configuration
+
+### config.json
+You can put permanent non critical information here, most likely you will not change anything and use the environment variables desribed below instead.
+
+### Environment variables
+- `PRESENTATION_DEFAULT_LENGTH`: default presentation length in minutes, (default: `45`)
+
+#### Registration email:
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_EMAIL`: `from`-field for registration email (most likely same as `SMTP_USER` on modern email services)
+- `SMTP_PASSWORD`
