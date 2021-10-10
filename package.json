@@ -1,0 +1,9 @@
+{
+  "name": "forth-conference",
+  "version": "0.3.0",
+  "description": "",
+  "author": "Gerald Wodni <gerald.wodni@gmail.com>",
+  "dependencies": {
+    "bbb-rooms": "^0.1.0"
+  }
+}
