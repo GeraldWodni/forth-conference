@@ -11,8 +11,6 @@ const moment = require("moment");
 module.exports = {
     setup: function( k ) {
 
-        var kDb = k.getDb();
-
 	k.prefixServeStatic( "/files/" );
 
         var emailTransport = nodemailer.createTransport( smtpTransport({
@@ -336,7 +334,7 @@ module.exports = {
         });
 
         k.router.get("/hotel-guests", function( req, res, next ){
-            kDb.query("SELECT * FROM guests ORDER BY hotel LIKE '%Room' DESC, hotel LIKE '%Double%' ASC, name ASC", [], function( err, data ) {
+            req.kern.db.query("SELECT * FROM guests ORDER BY hotel LIKE '%Room' DESC, hotel LIKE '%Double%' ASC, name ASC", [], function( err, data ) {
                 if( err ) return next( err );
 
                 const guests = [];
@@ -376,7 +374,7 @@ module.exports = {
 	});
 
 	k.router.get("/presentations", function( req, res, next ){
-            kDb.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
+            req.kern.db.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
                 if( err ) return next( err );
 
                 k.jade.render( req, res, "presentations", { guests: data } );
@@ -384,7 +382,7 @@ module.exports = {
 	});
 
 	k.router.get("/guests", function( req, res, next ){
-            kDb.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
+            req.kern.db.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
                 if( err ) return next( err );
 
                 k.jade.render( req, res, "guests", { guests: data } );

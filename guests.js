@@ -2,19 +2,18 @@
 // (c)copyright 2014-2021 by Gerald Wodni <gerald.wodni@gmail.com>
 
 var _       = require("underscore");
-var latex   = require("./latex");
+const Latex   = require("./latex");
 
 module.exports = {
     setup: function( k ) {
-        var db = k.getDb();
         var kData = k.getData();
-        latex = latex(k);
+        const latex = Latex(k);
 
         var prices = k.setupOpts.prices;
 
         function sendPdf( req, res, next, opts ) {
             k.requestman( req );
-            db.query("SELECT * FROM guests WHERE id=?", [ req.requestman.id() ], function( err, data ) {
+            req.kern.db.query("SELECT * FROM guests WHERE id=?", [ req.requestman.id() ], function( err, data ) {
                 if( err )
                     return next( err );
                 console.log( data );
