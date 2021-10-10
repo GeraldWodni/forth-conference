@@ -44,3 +44,15 @@ You can put permanent non critical information here, most likely you will not ch
 - `SMTP_USER`
 - `SMTP_EMAIL`: `from`-field for registration email (most likely same as `SMTP_USER` on modern email services)
 - `SMTP_PASSWORD`
+
+### Gravatar:
+- `GRAVATAR_PROXY_HOST`: to protect users privacy gravatars are proxied over this host. See [forth-standard.org](https://github.com/GeraldWodni/forth-standard.org) for an example on how to use that.
+
+### Files
+kern.js uses a hierarchical file lookup: this means you can override every file in your local website by simply naming it the same and keeping the relative path.
+
+#### LaTeX templates
+Example templates are provided for creating a confirmation and an invoice PDF. Copy them to your own website folder and adopt them if you want to make use of the integrated LaTeX system.
+
+### Users
+To access your instance you can provide a users.json file (only in _private_ repositories!) or generate one using [cli.js](https://github.com/GeraldWodni/kern.js/blob/master/cli.js) inside your running container.
