@@ -1,0 +1,143 @@
+@import "bootstrap";
+
+@blue: #70b2eb;
+@white: #ffffff;
+@light-gray: #DDD;
+@lighter-gray: #EEE;
+@light-blue: lighten(@blue, 20%);
+@background: @blue;
+@form-background: @light-gray;
+
+body {
+    background: @background;
+    padding: 20px 5px;
+}
+
+.wrapper {
+    background: @white;
+    border-radius: 20px;
+}
+
+footer {
+    margin: 5px 0 10px 0;
+}
+
+#logo {
+    display: block;
+    margin: 0 0 20px 20px;
+    float: right;
+}
+
+form#register {
+    background: @form-background;
+    padding: 15px;
+    border-radius: 15px;
+
+    h3 {
+        margin-top: 0;
+    }
+       
+}
+
+label.price {
+    font-family: monospace;
+}
+
+.none {
+    color: #CCC;
+}
+
+h2.section {
+    @height: 60px;
+    color: @blue;
+}
+
+.localtime {
+    background-color: #ACF;
+    border-radius: 3px;
+    padding: 1px 3px;
+}
+
+/* myEuroForth */
+ul.rooms {
+    @image-width: 192px;
+    @image-height: 128px;
+    @name-height: 1.5em;
+
+    list-style: none;
+    padding: 0;
+    li a {
+        display: grid;
+        grid-template-areas: "room attendees";
+        grid-template-columns: @image-width 1fr;
+        gap: 10px;
+
+        margin: 10px 0;
+        padding: 5px;
+
+        text-decoration: none;
+
+        background-color: @light-gray;
+        border-radius: 5px;
+
+        &:hover {
+            background-color: @light-blue;
+        }
+
+        .room {
+            grid-area: room;
+
+            img {
+                display: block;
+                height: @image-height;
+                width: @image-width;
+                object-fit: cover;
+                border-radius: 3px;
+            }
+            .name {
+                display: block;
+                top: -@name-height;
+                position: relative;
+                margin-bottom: -@name-height;
+
+                height: @name-height;
+                line-height: @name-height;
+                font-size: @name-height;
+
+                text-align: center;
+                color: #FFF;
+                text-shadow: 0 0 2px #000;
+                background-color: rgba( 255, 255, 255, 0.5 );
+            }
+        }
+
+
+        ul.attendees {
+            grid-area: attendees;
+
+            list-style: none;
+            padding: 0 0 5px 0;
+
+            //gap: 10px;
+
+            li {
+                display: inline-block;
+                background-color: @lighter-gray;
+                border-radius: 3px;
+                overflow: hidden;
+            }
+
+            img {
+                width: 32px;
+                height: 32px;
+            }
+
+            span {
+                padding: 3px 5px;
+            }
+        }
+
+
+    }
+}
+

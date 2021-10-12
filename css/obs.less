@@ -1,0 +1,253 @@
+/* HINT: this website will always be full-hd, not a real website-layout */
+@w: 1920px;
+@h: 1080px;
+
+/* edit the following values to your liking */
+@main-margin: 20px;
+@total-margin: 170px;
+@bottom-margin: 120px;
+@top-margin: @total-margin - @bottom-margin;
+
+@presentation-margin: @main-margin;
+@presentation-border-width: 10px;
+@presentation-border-radius: 30px;
+@presentation-animation-interval: 30s;
+
+@avatar-width: 200px;
+@avatar-margin: @main-margin;
+@avatar-border-radius: 10px;
+@avatar-border-width: @presentation-border-width;
+
+@gap: 30px;
+
+@mask-color: #F0F;
+//@mask-color: rgba( 255, 0, 255, 0.3 );
+
+@title-font-size: 40px;
+@title-bottom: (@bottom-margin - @title-font-size)/2;
+
+/* computed values below */
+@presentation-width: @w - @presentation-margin - @gap - @avatar-width - @avatar-margin;
+@presentation-height: @h - @top-margin - @bottom-margin;
+@avatar-height: @avatar-width * 4 /3;
+
+@blue: #29B6F6;
+
+@gradient: linear-gradient(130deg,#337ab7,#E1F5FE 41.07%,#29B6F6 76.05%);
+@euroforth-gradient: @gradient;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #333;
+    font-size: 11px;
+
+    width: @w;
+    height: @h;
+}
+
+@keyframes rotate-background {
+      0% { transform: rotate(0) };
+    100% { transform: rotate(360deg) };
+}
+
+.video-box {
+    position: absolute;
+    overflow: hidden;
+
+    .background {
+        position: absolute;
+
+        @x-offset: (@w - @presentation-width)/2;
+        @y-offset: (@w - @presentation-height)/2;
+
+        width: @w;
+        height: @w;
+
+        left:   -@x-offset;
+        top:    -@y-offset;
+
+        background: @gradient;
+        animation: rotate-background linear @presentation-animation-interval infinite;
+    }
+
+    .inner {
+        position: absolute;
+        z-index: 10;
+
+        background: @mask-color;
+
+        content: "";
+    }
+
+}
+
+.presentation {
+    border-radius: @presentation-border-radius + @presentation-border-width;
+
+    @margin: @presentation-margin;
+
+    top:    @top-margin;
+    bottom: @bottom-margin;
+    left:   @margin;
+
+    width: @presentation-width;
+
+    .inner {
+        top: @presentation-border-width;
+        left: @presentation-border-width;
+        right: @presentation-border-width;
+        bottom: @presentation-border-width;
+
+        border-radius: @presentation-border-radius;
+    }
+}
+
+.avatar {
+    border-radius: @avatar-border-radius + @avatar-border-width;
+
+    bottom: @bottom-margin;
+    right:  @avatar-margin;
+
+    width: @avatar-width;
+    height: @avatar-height;
+
+    .inner {
+        top: @avatar-border-width;
+        left: @avatar-border-width;
+        right: @avatar-border-width;
+        bottom: @avatar-border-width;
+
+        border-radius: @avatar-border-radius;
+    }
+}
+
+.bottom-text {
+    position: absolute;
+    bottom: @title-bottom;
+    font-family: sans-serif;
+    font-size: @title-font-size;
+    font-weight: bold;
+    color: #FFF;
+}
+
+div.euroforth {
+    position: absolute;
+    right: @avatar-margin;
+    top: @top-margin;
+
+    padding: @avatar-border-width;
+
+    width: @avatar-width;
+    //background-color: #0FF;
+
+    img.logo {
+        display: block;
+        width: 100%;
+    }
+
+    span.euroforth {
+        display: block;
+        font-family: sans-serif;
+        color: #FFF;
+
+        text-align: center;
+
+        &.number {
+            font-size: 80px;
+        }
+        &.name {
+            position: relative;
+            font-size: 40px;
+
+            background-color: #F0F;
+            background: @euroforth-gradient;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+
+            &::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: -100;
+                content: "EuroForth";
+
+                background: none;
+                background-clip: content-box;
+                text-shadow: 0 0 2px #FFF;
+            }
+        }
+        &.year {
+            padding-top: 10px;
+            font-family: monospace;
+            font-size: 29.5px;
+        }
+    }
+}
+
+@session-font-size: 50px;
+@schedule-font-size: 40px;
+.schedule {
+    color: #FFF;
+    font-family: sans-serif;
+    font-weight: 700;
+        text-shadow: 1px 1px 0 #000, -1px -1px 0 #000,
+                     1px -1px 0 #000, 1px -1px 0 #000;
+
+    .inner {
+        padding: 0 50px;
+        background: rgba( 0, 0, 0, 0.5 );
+    }
+    h3 {
+        font-size: @schedule-font-size;
+        margin: 50px 0 0 0;
+
+        code {
+            color: #CFF;
+            display: inline-block;
+            margin-right: 30px;
+
+            i {
+                display: inline-block;
+                margin-left: 10px;
+                font-style: normal;
+                font-weight: 400;
+            }
+        }
+    }
+    ul {
+        margin-top: 10px;
+        font-size: @schedule-font-size;
+        padding-left: 50px;
+        .presentation-guest {
+            color: #AFF;
+        }
+        .presentation-title {
+        }
+
+        li {
+            padding: 3px 10px;
+
+            &.active {
+                background-color: rgba(255, 255, 255, 0.3);
+                border: 1px solid #F0F;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+.title {
+    left: @presentation-margin + @presentation-border-radius;
+}
+
+.author {
+    right: @avatar-margin + @avatar-border-radius;
+}
