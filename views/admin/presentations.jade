@@ -1,0 +1,10 @@
+extends crud
+
+block crudAfterTitle
+    select(name="item")#active-presentation.form-control
+          each item in opts.items || []
+              option( value=item.id )= item.title
+
+    a.btn.btn-default(href="/admin/presentations/read-from-guests").pull-right
+        =("Read from guests")
+

@@ -1,0 +1,136 @@
+//- (c)2014 by Gerald Wodni
+
+extends layout
+
+mixin radio-field(name, label, value, price, checked)
+    div.form-group
+        div.checkbox
+            label.price
+                if checked || values[ name ] == value
+                    input(type='radio',name=name,value=value,data-hr=hr,data-price=price,checked=checked)
+                else
+                    input(type='radio',name=name,value=value,data-hr=hr,data-price=price)
+                |  €
+                = label
+                //= formatNumber( label, 6 )
+
+mixin header( name, link )
+    if link
+        a(href=link,target="_blank")
+            b| !{name}
+    else
+        b| !{name}
+
+mixin mode( name, group, value, complete, completeChecked )
+    div.row
+        div.col-xs-6.col-sm-5.col-md-6.col-lg-4.text-right
+            div.checkbox
+                | !{name}
+        div.col-xs-3.col-md-2
+            +radio-field( group, complete, value, complete, values[ group ] == value || completeChecked )
+
+mixin extraDays( extraDays )
+    div.row.extraDays
+        div.col-xs-6.col-sm-5.col-md-6.col-lg-4.text-right
+            | Extra Days:
+        each extraDay in extraDays
+            div.col-xs-4.col-md-3.col-lg-2
+                div.checkbox
+                    label.price
+                        input(type='checkbox',name="extraDays",value=extraDay.value,data-single=extraDay.single,data-double=extraDay.double,checked= (values.extraDays || []).indexOf(extraDay.value) >= 0 )
+                        = extraDay.name
+                        span.priceText
+
+block title
+    = conference 
+    |  
+    = year
+    
+block content
+    != markdownIntro
+
+    if meeting.registrationActive
+        form#register(method="post")
+            +messages( messages )
+
+            if showForm
+                h3
+                    = __("Registration, Price: €")
+                    span#price
+                        = (meeting.complete + meeting.earlyDiscount).toFixed(2).replace(/\./g, ',')
+
+                each hotel in hotels
+                    +header( hotel.header, hotel.link )
+                    if hotel.description
+                        p!= marked( hotel.description )
+                    if hotel.fullyBooked
+                        .alert.alert-warning
+                            b Fully Booked
+                    else
+                        each mode in hotel.modes
+                            +mode( mode.name, "hotel", mode.value, mode.complete )
+                        if hotel.extraDays && hotel.extraDays.length
+                            +extraDays( hotel.extraDays )
+
+                hr
+
+                h4= __("Details")
+                p
+                    = __("Please provide a correct email-address, we will keep it a secret")
+                div#details
+                    +text-field( "name", __("Name") + " *"), values.name )
+                    +text-field( "address", __("Address") + " *", values.address )
+                    if false
+                        +tel-field ( "telephone", __("Telephone"), values.telephone )
+                    else
+                        +hidden-field ( "telephone", "+15551234" )
+                    +email-field( "email", __("Email") + " *", values.email )
+                    if false
+                        +textarea-field( "remark", __("Remarks"), values.remark )
+
+                p
+                    | *…
+                    = __("Required")
+
+                hr
+
+                if false
+                    h4 Details about your Entourage
+                    div#partnerDetails
+                        //-+header( "Keine Begleitung" )
+                        //-+mode( "ohne Begleitung", "partner", "Kein", 0.0 )
+                        //-+header( "Verpflegung & Ausflüge für Begleitung" )
+                        //-+mode( "mit Begleitung", "partner", "Partner", meeting.partnerComplete, meeting.partnerWithout0 )
+                        +text-field( "partnerName", "Name", values.partnerName )
+                        +text-field( "partnerAddress", "Address", values.partnerAddress )
+                        +checkbox-field( "partnerTour", "Interested in partner-track (sightseeing, see above)", values.partner.indexOf("YES") > 0 )
+
+                    hr
+
+                h4= __("Presentation")
+                p
+                    i= __("Note: you can change your presentation details in your")
+                        |  
+                        b= myName
+                        |  - 
+                        = __("section. Link will be provided in your registration email.")
+                div#presentation
+                    +text-field( "presentationTitle", __("Title"), values.presentationTitle )
+                    +textarea-field( "presentationDescription", __("Description ( about 5 sentences )"), values.presentationDescription )
+                    +text-field( "presentationLength", __("Length ( 45min default, shorter okay )"), values.presentationLength )
+
+                hr
+
+                h4=__("Spam stop")
+                div#noSpam
+                    +text-field( "noSpam", __("Please compute the following assignment and enter the result:") + " 2 dup + ."), values.noSpam )
+
+                hr
+
+                button.btn.btn-primary#submit(type="submit")
+                    //- | Binding registration (€
+                    = __("Registration")
+                    |  (€
+                    span= __("see above")
+                    | )
+

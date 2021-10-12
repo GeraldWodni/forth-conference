@@ -114,7 +114,7 @@ module.exports = {
             } catch( err ) {
                 return next( err );
             }
-            k.jade.render( req, res, "myEuroForth", vals( req, Object.assign({ attendees }, values) ) );
+            k.jade.render( req, res, "myConference", vals( req, Object.assign({ attendees }, values) ) );
         }
 
         k.router.postman("/:hash", (req, res, next) => {

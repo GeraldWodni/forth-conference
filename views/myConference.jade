@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  h1 My EuroForth for #{guest.name}
+    p.lead
+        | Edit your own registration details directly
+
+    h2 Join
+    p
+        | You can join any room below by clicking on it, the conference will open in a new tab.
+        | Attendees are displayed next to the room.
+        | Feel free to join the leisure (non-conference) rooms whenever you want to hang out like we used to.
+        br
+        | Please only use the chair-room when you are chair or intend to give a presentation.
+
+    ul.rooms
+        each room, id in rooms
+            li
+                a(target="_blank", href="/myEuroForth/#{guest.editHash}/join-room/#{id}")
+                    .room
+                        img(src="https://ganymed.wodni.at/images/thumbs/#{id}.jpg")
+                        span.name=room.name
+
+                    ul.attendees
+                        each attendee in attendees[ id ] || []
+                            li
+                                img(src=attendee.avatarUrl, alt="avatar")
+                                span= attendee.name
+
+    h2 Presentation
+    form(method="post")
+        +messages( messages )
+        if showForm
+            +text-field( "presentationTitle", "Title", guest.presentationTitle )
+            +textarea-field( "presentationDescription", "Description ( about 5 sentences )", guest.presentationDescription )
+            +text-field( "presentationLength", "Length ( 45min default, shorter okay )", guest.presentationLength )
+            
+            button.btn.btn-primary#submit(type="submit")
+                | Update
+            |  
+            a.btn.btn-default(href="/") Back to EuroForth Website
+        else
+            a.btn.btn-primary(href="/") EuroForth Website
+            |  
+            a.btn.btn-default(href="/myEuroForth/#{guest.editHash}") My EuroForth

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 Guests
+    table.table
+        thead
+            tr
+                th Name
+                th Partner
+        tbody
+            each guest in guests
+                tr
+                    td= guest.name
+                    td
+                        if guest.partnerName
+                            = guest.partnerName
+                        else
+                            i.none None

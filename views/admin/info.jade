@@ -1,0 +1,55 @@
+extends admin
+
+block content
+    h1
+        | Willkommen im Tagungsmanagement
+    p.lead
+        | Hier ist eine Kurzbeschreibung:
+
+    h2
+        +glyph("info-sign")
+        |  Info
+    p
+        | Diese Info Anzeigen
+
+    h2
+        +glyph("home")
+        |  Gäste
+    p
+        | Regististrierungen verwalten
+        
+    h2
+        +glyph("picture")
+        |  Medien
+    p
+        | Dateien und Bilder hochladen
+        
+    h2
+        +glyph("edit")
+        |  Editor
+    ul
+        li
+            | Preise für Anmeldeformular eintragen (in 
+            a(href="/admin/editor/edit/prices.js") prices.js
+            |)
+        li
+            | Ort vorstellen (in 
+            a(href="/admin/editor/edit/views/intro.md") views/intro.md
+            |)
+        li
+            | Programm editieren (in 
+            a(href="/admin/editor/edit/views/program.md") views/program.md
+            |)
+
+    h2 
+        +glyph("user")
+        |  Users
+ 
+    p
+        | Benutzeraccounts &amp; Berechtigungen setzen.
+
+    h2
+        +glyph("log-out")
+        |  Logout
+    p
+        | Safely leave the administration system.

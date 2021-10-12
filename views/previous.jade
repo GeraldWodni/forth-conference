@@ -1,0 +1,19 @@
+//- (c)2020 by Gerald Wodni
+// render previous conferences for crosslinking to anton
+
+extends layout
+
+block title
+    | EuroForth 
+    = year
+
+block content
+    != markdownIntro
+
+    if markdownProgram
+        h2.section Program section
+        != markdownProgram
+
+    if htmlPresentations
+        h2.section Presentation section
+        != htmlPresentations

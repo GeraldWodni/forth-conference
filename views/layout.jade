@@ -1,0 +1,43 @@
+//- (c)2014 by Gerald Wodni
+
+doctype html
+include mixins
++script('/js/jquery.min.js')
++script('/js/site.js')
+
+mixin menuItem( link, icon, text )
+    li
+        a(href="##{link}")
+            +glyph(icon)
+            span.hidden-xs
+                | 
+                = text
+
+html
+    head
+        title
+            block title
+                | EuroForth
+        meta(name="viewport",content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width")
+        +style('/css/jquery-ui-smoothness.min.css')
+        +style('/css/index.css')
+        +styles
+    body
+
+        div.container.wrapper
+            div.main-content
+                img#logo(src="/images/logo.png",alt="Forth-Gesellschaft-Logo")
+                block content
+
+            footer
+                div.container-fluid
+                    div.row
+                        div.col-xs-4
+                            | powered by  
+                            a(href='https://github.com/GeraldWodni/kern.js') kern.js
+                        div.col-xs-8.text-right
+                            | if you experience any problems, please contact Gerald Punkt Wodni on Gmail
+                            +glyph("smile")
+
+        +script('/js/bootstrap.min.js')
+        +scripts

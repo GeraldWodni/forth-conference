@@ -1,0 +1,27 @@
+//- Wenn man das Programm direkt in Jade statt in Markdown schraiben will,
+//- einfach die Zeile 
+//- != markdownProgram
+//- auskommentieren, und den Inhalt direkt unter content eingerückt schreiben.
+
+extends layout
+
+block title
+    | EuroForth 
+    = year
+
+block content
+    != markdownProgram
+
+    h2 Presentations
+    ol
+        each guest in guests
+            li
+                b
+                    = guest.presentationTitle
+
+                |  (
+                = guest.presentationLength
+                | ) - 
+                = guest.name
+                br
+                != marked( guest.presentationDescription)

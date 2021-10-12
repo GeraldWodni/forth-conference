@@ -1,0 +1,19 @@
+extends crud
+
+block crudPreEditItem
+    h2.transaction.clearfix
+        div.pull-right
+            div.btn-group
+                a#view.btn.btn-default(href=opts.link + "/invoice/pdf/#{opts.values[opts.idField]}",title=__("View PDF"),target="_blank")
+                    | Invoice 
+                    +glyph("eye-open")
+                a#download.btn.btn-default(href=opts.link + "/invoice/pdf-download/#{opts.values[opts.idField]}",title=__("Download PDF"),target="_blank")
+                    +glyph("download-alt")
+            div.btn-group
+                a#view.btn.btn-default(href=opts.link + "/confirmation/pdf/#{opts.values[opts.idField]}",title=__("View PDF"),target="_blank")
+                    | Confirmation 
+                    +glyph("eye-open")
+                a#download.btn.btn-default(href=opts.link + "/confirmation/pdf-download/#{opts.values[opts.idField]}",title=__("Download PDF"),target="_blank")
+                    +glyph("download-alt")
+                a#download.btn.btn-default(href=opts.link + "/confirmation/tex-download/#{opts.values[opts.idField]}",title=__("Download TEX"),target="_blank")
+                    +glyph("save-file")

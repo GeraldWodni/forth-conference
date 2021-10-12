@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    h1 Guests
+    table.table
+        thead
+            tr
+                th #
+                th Name
+                th Dauer
+                th Presentation
+                th Beschreibung
+        tbody
+            - var i = 1;
+            each guest in guests
+                tr
+                    td= i++
+                    td= guest.name
+                    td= guest.presentationLength
+                    td= guest.presentationTitle
+                    td= guest.presentationDescription

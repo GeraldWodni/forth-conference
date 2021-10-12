@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    h1 Guests
+    table.table
+        thead
+            tr
+                th #
+                th Mode
+                th Name
+                th VIP
+                th Partner
+                th Stay
+                th Extra Nights
+        tbody
+            - var i = 1;
+            - console.log( "GUESTs:", guests )
+            each guest in guests
+                tr
+                    td= i++
+                    td= guest.mode.name
+                    td= guest.name
+                    td
+                        if guest.vip
+                            .text-success VIP
+                    td
+                        if guest.mode.single
+                            i.none None
+                        else
+                            = guest.partner
+                    td= guest.header
+                    td
+                        if guest.extraDays.length
+                            = guest.extraDays.join( ", " )
+                        else
+                            i.none None
