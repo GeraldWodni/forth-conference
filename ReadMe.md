@@ -23,7 +23,7 @@ Last build the [website-sync Dockerfile](https://github.com/GeraldWodni/kern.js/
 
 ## Install
 1. See the documentation above about which environment variables need to be set.
-2. Setup a _private_ repository for your database and put the empty database(TODO:link) export into it.
+2. Setup a _private_ repository for your database and put the empty [database](https://github.com/GeraldWodni/forth-conference/blob/master/sql/conference.sql) export into it, or use [create-database-repo.sh](https://github.com/GeraldWodni/forth-conference/blob/master/sql/create-database-repo.sh).
 3. Configure database-sync to use said repository.
 4. Setup another _public or private_ repository for your conference configuration. Make sure not to leak any confidential information.
 5. Keep all login and confidential information in environment variables and in none of the above repos.
