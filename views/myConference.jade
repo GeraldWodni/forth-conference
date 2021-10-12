@@ -1,45 +1,59 @@
 extends layout
 
 block content
-  h1 My EuroForth for #{guest.name}
+    +locale("en")
+        h1 My #{prices.conference} for #{guest.name}
+    +locale("de")
+        h1 Meine #{prices.conference} für #{guest.name}
     p.lead
-        | Edit your own registration details directly
+        +localeEnDe( "Edit your own registration details directly", "Editieren Sie Ihre eigenen Präsentationsdetails direkt" )
+        if Object.keys( rooms ).length
+            |  
+            +localeEnDe( "(see bottom)", "(siehe unten)" )
 
-    h2 Join
-    p
-        | You can join any room below by clicking on it, the conference will open in a new tab.
-        | Attendees are displayed next to the room.
-        | Feel free to join the leisure (non-conference) rooms whenever you want to hang out like we used to.
-        br
-        | Please only use the chair-room when you are chair or intend to give a presentation.
+    if Object.keys( rooms ).length
+        h2= localeLineEnDe("Join", "Beitreten")
+        p
+            +locale("en")
+                | You can join any room below by clicking on it, the conference will open in a new tab.
+                | Attendees are displayed next to the room.
+                | Feel free to join the leisure (non-conference) rooms whenever you want to hang out like we used to.
+                br
+                | Please only use the chair-room when you are chair or intend to give a presentation.
+            +locale("de")
+                | Sie können jeden unten aufgeführten Raum durch Klicken beitreten, die Konferent wird in einem neuen Tab geöffnet.
+                | Teilnehmer werden neben dem Raum angezeigt.
+                | Seien Sie herzlich dazu eingeladen die Freizeiträume nach belieben zu verwenden.
+                br
+                | Bitte verwenden sie den Vorsitzendenraum nur wenn sie der Vorsitzende sine oder eine Präsentation abhalten wollen.
 
-    ul.rooms
-        each room, id in rooms
-            li
-                a(target="_blank", href="/myEuroForth/#{guest.editHash}/join-room/#{id}")
-                    .room
-                        img(src="https://ganymed.wodni.at/images/thumbs/#{id}.jpg")
-                        span.name=room.name
+        ul.rooms
+            each room, id in rooms
+                li
+                    a(target="_blank", href="/myEuroForth/#{guest.editHash}/join-room/#{id}")
+                        .room
+                            img(src="https://ganymed.wodni.at/images/thumbs/#{id}.jpg")
+                            span.name=room.name
 
-                    ul.attendees
-                        each attendee in attendees[ id ] || []
-                            li
-                                img(src=attendee.avatarUrl, alt="avatar")
-                                span= attendee.name
+                        ul.attendees
+                            each attendee in attendees[ id ] || []
+                                li
+                                    img(src=attendee.avatarUrl, alt="avatar")
+                                    span= attendee.name
 
     h2 Presentation
     form(method="post")
         +messages( messages )
         if showForm
-            +text-field( "presentationTitle", "Title", guest.presentationTitle )
-            +textarea-field( "presentationDescription", "Description ( about 5 sentences )", guest.presentationDescription )
-            +text-field( "presentationLength", "Length ( 45min default, shorter okay )", guest.presentationLength )
+            +text-field( "presentationTitle", __("Title"), guest.presentationTitle )
+            +textarea-field( "presentationDescription", __("Description ( about 5 sentences )"), guest.presentationDescription )
+            +text-field( "presentationLength", __("Length ( 45min default, shorter okay )"), guest.presentationLength )
             
             button.btn.btn-primary#submit(type="submit")
-                | Update
+                =__("Update")
             |  
-            a.btn.btn-default(href="/") Back to EuroForth Website
+            a.btn.btn-default(href="/")= __("Back to CONFERENCE Website").replace( /CONFERENCE/, prices.conference )
         else
-            a.btn.btn-primary(href="/") EuroForth Website
+            a.btn.btn-primary(href="/") #{primary.conference} Website
             |  
             a.btn.btn-default(href="/myEuroForth/#{guest.editHash}") My EuroForth

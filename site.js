@@ -16,14 +16,14 @@ module.exports = {
         const viewYearPrefix =  'views/' + k.getWebsiteConfig( "year" );
 
         var emailTransport = nodemailer.createTransport( smtpTransport({
-            host: k.getWebsiteConfig( "booking.smtp.host" ),
-            port: k.getWebsiteConfig( "booking.smtp.port", 25 ),
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
             tls: {
                 rejectUnauthorized: false
             },
             auth: {
-                user: k.getWebsiteConfig( "booking.smtp.user"),
-                pass: k.getWebsiteConfig( "booking.smtp.password")
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD,
             }
         }));
 
@@ -63,7 +63,7 @@ module.exports = {
 
         /* editHash for guests: let them edit their details */
         /* guard and load guest */
-        k.useSiteModule( `/${prices.myName}`, k.website, "my.js" );
+        k.useSiteModule( `/${prices.myName}`, k.website, "my.js", { setup: { prices } } );
 
 
         /* main website */
@@ -138,7 +138,7 @@ module.exports = {
                             if( err )
                                 return next( err );
 
-                            messages.push( { type: "success", title: "Success", text: "Thank you for your registration!\nPlease transfer  € " + price + " to the bank account provided in your email - see special COVID19 instructions on the website (which you should receive in a few moments from info@theforth.net)." } );
+                            messages.push( { type: "success", title: "Success", text: "Thank you for your registration!\nPlease transfer  € " + price + ` to the bank account provided in your email - see special COVID19 instructions on the website (which you should receive in a few moments from ${process.env.SMTP_EMAIL}).` } );
                             k.jade.render( req, res, "register", { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: false } );
 
                             const text = `Hotel: ${values.hotel}\nExtra days: ${values.extraDays}\nPrice (total): ${price}`

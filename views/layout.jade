@@ -5,6 +5,18 @@ include mixins
 +script('/js/jquery.min.js')
 +script('/js/site.js')
 
+- function localeLine(target, text) { if( __locale.currentRoot == target ) return text; return "" }
+- function localeLineEnDe(english, german) { if( __locale.currentRoot == "de" ) return german; return english }
+mixin locale(target)
+    if __locale.currentRoot == target
+        block
+
+mixin localeEnDe(english, german)
+    +locale("en")
+        = english
+    +locale("de")
+        = german
+
 mixin menuItem( link, icon, text )
     li
         a(href="##{link}")
