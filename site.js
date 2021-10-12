@@ -13,6 +13,8 @@ module.exports = {
 
 	k.prefixServeStatic( "/files/" );
 
+        const viewYearPrefix =  'views/' + k.getWebsiteConfig( "year" );
+
         var emailTransport = nodemailer.createTransport( smtpTransport({
             host: k.getWebsiteConfig( "booking.smtp.host" ),
             port: k.getWebsiteConfig( "booking.smtp.port", 25 ),
@@ -25,7 +27,8 @@ module.exports = {
             }
         }));
 
-        var prices = require("./prices");
+        const pricesPath = k.hierarchy.lookupFile( k.website, `./${viewYearPrefix}/prices.js`);
+        var prices = require( `../../${pricesPath}` );
         function updateDates() {
             prices.meeting.programActive = new Date() > new Date( prices.meeting.start || "2000-01-01" );
             prices.meeting.registrationActive = new Date() > new Date( prices.meeting.openRegistration || "2000-01-01" );
@@ -98,11 +101,12 @@ module.exports = {
                     var noSpam = req.postman.uint("noSpam");
 
                     /* mandatory fields */
-                    if( values.name == "" ) messages.push( { title: "Name required" } );
-                    if( values.address == "" ) messages.push( { title: "Address required" } );
-                    if( values.telephone == "" ) messages.push( { title: "Telephone number required" } );
-                    if( values.email == "" ) messages.push( { title: "Email required" } );
-                    if( noSpam != "4" ) messages.push( { title: "Spam-challange not correct, Hint: the result is 4" } );
+                    const __ = req.locales.__;
+                    if( values.name == "" ) messages.push( { title: __("Name required") } );
+                    if( values.address == "" ) messages.push( { title: __("Address required") } );
+                    if( values.telephone == "" ) messages.push( { title: __("Telephone number required") } );
+                    if( values.email == "" ) messages.push( { title: __("Email required") } );
+                    if( noSpam != "4" ) messages.push( { title: __("Spam-challange not correct, Hint: the result is") + " 4" } );
 
                     /* no errors -> create */
                     if( messages.length == 0 ) {
@@ -229,7 +233,7 @@ module.exports = {
 
             /* read program markdown */
             let markdownProgram = await new Promise( (fulfill, reject ) => {
-                k.readHierarchyFile( k.website, "views/program.md", function( err, data ) {
+                k.readHierarchyFile( k.website, `/${viewYearPrefix}/program.md`, function( err, data ) {
                     if( err )
                         return reject( err );
                     fulfill( data[0] );
@@ -324,7 +328,7 @@ module.exports = {
         } });
 
         k.router.get("/agenda", function( req, res, next ){
-            k.readHierarchyFile( k.website, "views/agenda.md", function( err, data ) {
+            k.readHierarchyFile( k.website, `/${viewYearPrefix}/agenda.md`, function( err, data ) {
                 if( err )
                     return next( err );
 
@@ -397,16 +401,18 @@ module.exports = {
             if( prices.meeting.programActive )
                 return renderProgram( req, res, next );
 
-            k.readHierarchyFile( k.website, "views/intro.md", function( err, data ) {
+            k.readHierarchyFile( k.website, `/${viewYearPrefix}/intro.md`, function( err, data ) {
                 if( err )
                     return next( err )
 
                 var markdownIntro = marked( data[0] );
-                markdownIntro = markdownIntro.replace(/REGISTERBUTTON/g, prices.meeting.registrationActive ? '<a class="btn btn-primary btn-lg" href="#register">Register</a>' : '' );
+                markdownIntro = markdownIntro.replace(/REGISTERBUTTON/g, prices.meeting.registrationActive ? `<a class="btn btn-primary btn-lg" href="#register">${prices.registerButton}</a>` : '' );
 
                 k.jade.render( req, res, "register", { markdownIntro: markdownIntro, formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: { meeting: "meeting", hotel: "Keines", partner: "Kein" }, showForm: true,
+                    conference: prices.conference,
+                    myName: prices.myName,
                     year: prices.year,
-                    messages: [] } ); // { title: "Achtung", text: "Anmeldung erst ab Februar möglich, bitte noch ein wenig Geduld!" } ] } );
+                    messages: [] } );
             });
         }
 

@@ -1,5 +1,6 @@
 {
     ".*": {
+        "year": 2021,
         "mysql": {
             "user":     "placeholder, use environment variables",
             "database": "placeholder, use environment variables",
