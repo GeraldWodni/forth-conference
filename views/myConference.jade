@@ -30,9 +30,9 @@ block content
         ul.rooms
             each room, id in rooms
                 li
-                    a(target="_blank", href="/myEuroForth/#{guest.editHash}/join-room/#{id}")
+                    a(target="_blank", href="/#{prices.myName}/#{guest.editHash}/join-room/#{id}")
                         .room
-                            img(src="https://ganymed.wodni.at/images/thumbs/#{id}.jpg")
+                            img(src="https://#{process.env.BBB_HOST}/images/thumbs/#{id}.jpg")
                             span.name=room.name
 
                         ul.attendees
@@ -56,4 +56,7 @@ block content
         else
             a.btn.btn-primary(href="/") #{prices.conference} Website
             |  
-            a.btn.btn-default(href="/myEuroForth/#{guest.editHash}") My EuroForth
+            a.btn.btn-default(href="/#{prices.myName}/#{guest.editHash}")
+                = localeLineEnDe("My", "Meine")
+                |  
+                = prices.conference
