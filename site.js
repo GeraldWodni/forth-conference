@@ -159,7 +159,7 @@ module.exports = {
                             }, function( err, data ){
                                 if( err )
                                     return console.log( "EMAIL-ERROR:".bold.red, err );
-                                consile.log( "EMAIL-SUCCESS".bold.green );
+                                console.log( "EMAIL-SUCCESS".bold.green );
                             });
                         });
                     }
