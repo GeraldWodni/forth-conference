@@ -151,7 +151,7 @@ module.exports = {
                                 + `\n\nRemark: ${values.remark}`;
 
                             emailTransport.sendMail({
-                                from: req.kern.getWebsiteConfig( "booking.smtp.email" ),
+                                from: process.env.SMTP_USER,
                                 to: values.email,
                                 cc: prices.operatorEmail,
                                 subject: `${prices.conference} Registration ${values.name}`,
@@ -159,6 +159,7 @@ module.exports = {
                             }, function( err, data ){
                                 if( err )
                                     return console.log( "EMAIL-ERROR:".bold.red, err );
+                                consile.log( "EMAIL-SUCCESS".bold.green );
                             });
                         });
                     }
