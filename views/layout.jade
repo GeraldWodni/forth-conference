@@ -29,7 +29,10 @@ html
     head
         title
             block title
-                | EuroForth
+                if conferenceName
+                    = conferenceName
+                else
+                    | EuroForth
         meta(name="viewport",content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width")
         +style('/css/jquery-ui-smoothness.min.css')
         +style('/css/index.css')

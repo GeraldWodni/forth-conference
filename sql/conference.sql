@@ -13,6 +13,7 @@ CREATE TABLE `guests` (
   `address` varchar(128) NOT NULL,
   `telephone` varchar(16) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `memberNumber` varchar(64) NOT NULL,
   `remark` text NOT NULL,
   `partnerName` varchar(64) NOT NULL,
   `partnerAddress` varchar(128) NOT NULL,

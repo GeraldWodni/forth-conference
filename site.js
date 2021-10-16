@@ -35,6 +35,13 @@ module.exports = {
         }
         updateDates();
 
+        /* global value function (place generic value logic here) */
+        function vals( req, obj ) {
+            return Object.assign({
+                conferenceName: prices.conference,
+            }, obj);
+        }
+
         k.reg("admin").addSiteModule( "guests", k.website, "guests.js", "Guests", "home", {
             setup: {
                 prices: prices
@@ -83,6 +90,7 @@ module.exports = {
                         address: req.postman.address(),
                         telephone: req.postman.telephone(),
                         email: req.postman.email(),
+                        memberNumber: req.postman.id("memberNumber"),
                         remark: req.postman.text( "remark" ),
                         //partner: req.postman.text( "partner" ),
                         partner: req.postman.exists( "partnerTour" ) ? "Partnertour-YES" : "Partnertour-NO",
@@ -139,16 +147,9 @@ module.exports = {
                                 return next( err );
 
                             messages.push( { type: "success", title: "Success", text: "Thank you for your registration!\nPlease transfer  € " + price + ` to the bank account provided in your email - see special COVID19 instructions on the website (which you should receive in a few moments from ${process.env.SMTP_EMAIL}).` } );
-                            k.jade.render( req, res, "register", { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: false } );
+                            k.jade.render( req, res, "register", vals( req, { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: false }) );
 
-                            const text = `Hotel: ${values.hotel}\nExtra days: ${values.extraDays}\nPrice (total): ${price}`
-                                + ( price > 0 ? `\nPlease transfer the full amount in Euro to:\n${prices.operatorBankAccount}` : '' )
-                                + ( prices.chatRegistration ? `\n\n${process.env.CHAT_REGISTRATION}` : '' )
-                                + `\n\nYou can update your presentation details by yourself here: https://${k.website}/${prices.myName}/${values.editHash}`
-                                + `\n\nName: ${values.name}\nAddress: ${values.address}\nTelephone: ${values.telephone}\nEmail: ${values.email}`
-                                + `\n\nEntourage: ${values.partner}\nName: ${values.partnerName}\nAdresse: ${values.partnerAddress}`
-                                + `\n\nPresentation: ${values.presentationTitle} Length: ${values.presentationLength}\n${values.presentationDescription}`
-                                + `\n\nRemark: ${values.remark}`;
+                            const text = prices.emailTemplate( { prices, values, price } );
 
                             emailTransport.sendMail({
                                 from: process.env.SMTP_USER,
@@ -166,7 +167,7 @@ module.exports = {
                     else {
                         /* replace string by array */
                         values.extraDays = extraDays;
-                        k.jade.render( req, res, "register", { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: true } );
+                        k.jade.render( req, res, "register", vals( req, { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: true }) );
                     }
                 });
             });
@@ -306,7 +307,7 @@ module.exports = {
                     ORDER BY name ASC`);
 
                 markdownProgram = marked( markdownProgram );
-                k.jade.render( req, res, "program", { markdownProgram, guests, year: prices.year } );
+                k.jade.render( req, res, "program", vals( req, { markdownProgram, guests, year: prices.year }) );
             } catch ( err ) {
                 next( err );
             }
@@ -334,7 +335,7 @@ module.exports = {
                     return next( err );
 
                 markdownAgenda = marked( data[0] );
-                k.jade.render( req, res, "agenda", { markdownAgenda: markdownAgenda, guests: data } );
+                k.jade.render( req, res, "agenda", vals( req, { markdownAgenda: markdownAgenda, guests: data }) );
             });
         });
 
@@ -374,7 +375,7 @@ module.exports = {
                     guests.push( guest );
                 }
 
-                k.jade.render( req, res, "hotelGuests", { guests: guests } );
+                k.jade.render( req, res, "hotelGuests", vals( req, { guests: guests }) );
             });
 	});
 
@@ -382,7 +383,7 @@ module.exports = {
             req.kern.db.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
                 if( err ) return next( err );
 
-                k.jade.render( req, res, "presentations", { guests: data } );
+                k.jade.render( req, res, "presentations", vals( req, { guests: data }) );
             });
 	});
 
@@ -390,7 +391,7 @@ module.exports = {
             req.kern.db.query("SELECT * FROM guests ORDER BY name ASC", [], function( err, data ) {
                 if( err ) return next( err );
 
-                k.jade.render( req, res, "guests", { guests: data } );
+                k.jade.render( req, res, "guests", vals( req, { guests: data }) );
             });
 	});
         
@@ -409,11 +410,11 @@ module.exports = {
                 var markdownIntro = marked( data[0] );
                 markdownIntro = markdownIntro.replace(/REGISTERBUTTON/g, prices.meeting.registrationActive ? `<a class="btn btn-primary btn-lg" href="#register">${prices.registerButton}</a>` : '' );
 
-                k.jade.render( req, res, "register", { markdownIntro: markdownIntro, formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: { meeting: "meeting", hotel: "Keines", partner: "Kein" }, showForm: true,
+                k.jade.render( req, res, "register", vals( req, { markdownIntro: markdownIntro, formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: { meeting: "meeting", hotel: "Keines", partner: "Kein" }, showForm: true,
                     conference: prices.conference,
                     myName: prices.myName,
                     year: prices.year,
-                    messages: [] } );
+                    messages: [] } ) );
             });
         }
 
@@ -449,12 +450,12 @@ module.exports = {
                             if( !err )
                                 htmlPresentations = data[0];
 
-                            k.jade.render( req, res, "previous", {
+                            k.jade.render( req, res, "previous", vals( req, {
                                 year: year,
                                 markdownIntro: markdownIntro,
                                 markdownProgram: markdownProgram,
                                 htmlPresentations: htmlPresentations
-                            });
+                            }));
                         });
                     });
                 });

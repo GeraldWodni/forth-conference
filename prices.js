@@ -1,11 +1,27 @@
 // euro.theforth.net price settings
 
 module.exports = {
+    conference: "EuroForth",
     year: 2021,
+    registerButton: "Register",
     myName: "myEuroForth",
     operatorEmail: "gerald.wodni@gmail.com",
     operatorBankAccount: "TODO: use environment variable or function instead",
     chatRegistration: "TODO: use environment variable instead",
+
+    emailTemplate: function _emailTemplate( { prices, values, price } ) {
+        return `Hotel: ${values.hotel}\nExtra days: ${values.extraDays}\nPrice (total): ${price}`
+            + ( price > 0 ? `\nPlease transfer the full amount in Euro to:\n${prices.operatorBankAccount}` : '' )
+            + ( prices.chatRegistration ? `\n\n${process.env.CHAT_REGISTRATION}` : '' )
+            + `\n\nYou can update your presentation details by yourself here: https://${k.website}/${prices.myName}/${values.editHash}`
+            + `\n\nName: ${values.name}`
+            + `\nAddress: ${values.address}`
+            + `\nTelephone: ${values.telephone}`
+            + `\nEmail: ${values.email}`
+            + `\n\nEntourage: ${values.partner}\nName: ${values.partnerName}\nAdresse: ${values.partnerAddress}`
+            + `\n\nPresentation: ${values.presentationTitle} Length: ${values.presentationLength}\n${values.presentationDescription}`
+            + `\n\nRemark: ${values.remark}`;
+    },
     meeting: {
         openRegistration: "2021-08-15",
         start: "2021-09-10"
