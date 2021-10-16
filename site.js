@@ -146,10 +146,10 @@ module.exports = {
                             if( err )
                                 return next( err );
 
-                            messages.push( { type: "success", title: "Success", text: "Thank you for your registration!\nPlease transfer  € " + price + ` to the bank account provided in your email - see special COVID19 instructions on the website (which you should receive in a few moments from ${process.env.SMTP_EMAIL}).` } );
+                            messages.push( { type: "success", title: __("Success"), text: prices.successTemplate({price}) } );
                             k.jade.render( req, res, "register", vals( req, { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: false }) );
 
-                            const text = prices.emailTemplate( { prices, values, price } );
+                            const text = prices.emailTemplate( { prices, values, price, website: k.website } );
 
                             emailTransport.sendMail({
                                 from: process.env.SMTP_USER,

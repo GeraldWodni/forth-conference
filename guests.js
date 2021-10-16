@@ -122,6 +122,7 @@ module.exports = {
                 address:        { text: "Address",          type: "text", filter: "address" },
                 telephone:      { text: "Telephone",        type: "tel" },
                 email:          { text: "Email",            type: "email" },
+                memberNumber:   { text: "Member number",    type: "text", filter: "id" },
                 remark:         { text: "Remark",           type: "textarea", filter: "raw" },
                 //partner:        { text: "Partner",          type: "enum", keys: ["Kein+T0", "Partner+T0", "Partner-T0"]},
                 partner:        { text: "Partner",          type: "text" },

@@ -9,11 +9,14 @@ module.exports = {
     operatorBankAccount: "TODO: use environment variable or function instead",
     chatRegistration: "TODO: use environment variable instead",
 
-    emailTemplate: function _emailTemplate( { prices, values, price } ) {
+    /* message to show after successful registration */
+    successTemplate: function _successTemplate( { price } ) { "Thank you for your registration!\nPlease transfer  € " + price + ` to the bank account provided in your email - see special COVID19 instructions on the website (which you should receive in a few moments from ${process.env.SMTP_EMAIL}).` },
+    /* registration email text body */
+    emailTemplate: function _emailTemplate( { prices, values, price, website } ) {
         return `Hotel: ${values.hotel}\nExtra days: ${values.extraDays}\nPrice (total): ${price}`
             + ( price > 0 ? `\nPlease transfer the full amount in Euro to:\n${prices.operatorBankAccount}` : '' )
             + ( prices.chatRegistration ? `\n\n${process.env.CHAT_REGISTRATION}` : '' )
-            + `\n\nYou can update your presentation details by yourself here: https://${k.website}/${prices.myName}/${values.editHash}`
+            + `\n\nYou can update your presentation details by yourself here: https://${website}/${prices.myName}/${values.editHash}`
             + `\n\nName: ${values.name}`
             + `\nAddress: ${values.address}`
             + `\nTelephone: ${values.telephone}`
