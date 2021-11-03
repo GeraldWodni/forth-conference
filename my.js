@@ -14,6 +14,7 @@ module.exports = {
 
         function vals( req, values ) {
             return Object.assign( {
+                conferenceName: prices.conference,
                 prices: k.setupOpts.prices,
                 guest: req.guest,
                 rooms,
