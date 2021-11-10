@@ -10,12 +10,14 @@ const bbbApi = new BbbApi( bbbHost, process.env.BBB_SECRET );
 
 module.exports = {
     setup: function( k ) {
-        const rooms = k.setupOpts.prices.bbbRooms || {};
+        const prices = k.setupOpts.prices;
+        const rooms = prices.bbbRooms || {};
 
         function vals( req, values ) {
             return Object.assign( {
                 conferenceName: prices.conference,
-                prices: k.setupOpts.prices,
+                year: prices.year,
+                prices,
                 guest: req.guest,
                 rooms,
             }, values );

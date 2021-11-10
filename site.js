@@ -38,7 +38,7 @@ module.exports = {
         /* global value function (place generic value logic here) */
         function vals( req, obj ) {
             return Object.assign({
-                conferenceName: prices.conference,
+                conferenceName: prices.conference + " " + prices.year,
             }, obj);
         }
 
@@ -451,6 +451,7 @@ module.exports = {
                                 htmlPresentations = data[0];
 
                             k.jade.render( req, res, "previous", vals( req, {
+                                conference: prices.conference,
                                 year: year,
                                 markdownIntro: markdownIntro,
                                 markdownProgram: markdownProgram,
