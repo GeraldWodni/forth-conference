@@ -39,6 +39,7 @@ module.exports = {
         function vals( req, obj ) {
             return Object.assign({
                 conferenceName: prices.conference + " " + prices.year,
+                showPresentationList: prices.showPresentationList || false,
             }, obj);
         }
 
@@ -250,8 +251,10 @@ module.exports = {
                     while( true ) {
                         lastSession = daySession;
                         md+= `- ${daySession.shortTime} ${daySession.name}${daySession.onAir ? ' **on air**': ''}\n`
-                        for( const presentation of daySession.presentations )
-                            md += `  - ${presentation.guestName}: ${presentation.title} (${presentation.minutes}min)\n`;
+                        for( const presentation of daySession.presentations ) {
+                            md += `  - ${presentation.guestName}: ${presentation.title} (${presentation.minutes}min)  \n`;
+                            md += `    ${presentation.description.trim().replace(/\r?\n/g, "  \n    ")}\n`;
+                        }
 
                         /* check for next sessions */
                         daySession = daySession.nextSession;

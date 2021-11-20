@@ -8,16 +8,17 @@ extends layout
 block content
     != markdownProgram
 
-    h2 Presentations
-    ol
-        each guest in guests
-            li
-                b
-                    = guest.presentationTitle
+    if showPresentationList
+        h2=__("Presentations")
+        ol
+            each guest in guests
+                li
+                    b
+                        = guest.presentationTitle
 
-                |  (
-                = guest.presentationLength
-                | ) - 
-                = guest.name
-                br
-                != marked( guest.presentationDescription)
+                    |  (
+                    = guest.presentationLength
+                    | ) - 
+                    = guest.name
+                    br
+                    != marked( guest.presentationDescription)
