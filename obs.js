@@ -1,7 +1,7 @@
 // obs: browser-source helper
 // (c)copyright 2021 by Gerald Wodni <gerald.wodni@gmail.com>
 
-const marked = require("marked");
+const { marked } = require("marked");
 const moment = require("moment");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
                     activePresentationId = 0;
                 const days = req.getman.uint("dayOffset") || 0;
                 const sessions = await k.setupOpts.sessionPresentations( req );
-                const rootDaySessions = sessions.filter( s => moment(s.date).format( "YYYY-MM-DD" ) == moment( new Date() ).add(days, 'days').format( "YYYY-MM-DD") );
+                const rootDaySessions = sessions.filter( s => moment(s.date).format( "YYYY-MM-DD" ) == moment( new Date() ).add(days, 'days').format( "YYYY-MM-DD") && s.onAir );
                 const daySessions = [];
                 for( let daySession of rootDaySessions )
                     while( daySession ) {

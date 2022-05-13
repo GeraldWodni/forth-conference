@@ -4,7 +4,7 @@
 
 const nodemailer = require("nodemailer");
 const smtpTransport = require("nodemailer-smtp-transport");
-const marked = require("marked");
+const { marked } = require("marked");
 const crypto = require("crypto");
 const moment = require("moment");
 
