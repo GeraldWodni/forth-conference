@@ -74,8 +74,18 @@ block content
                     = __("Please provide a correct email-address, we will keep it a secret")
                 div#details
                     +text-field( "name", __("Name") + " *"), values.name )
-                    +text-field( "address", __("Address") + " *", values.address )
-                    if false
+                    if !meeting.online
+                        +text-field( "address", __("Address") + " *", values.address )
+                    else
+                        +hidden-field( "address", "Loop road" )
+
+                    if meeting.enableMemberNumber
+                        p
+                            | Wenn Sie kein Mitglied sind, schreiben Sie bitte eine 0 als Mitgliedsnummer
+                        +text-field( "memberNumber", "Mitgliedsnummer", values.memberNumber )
+                    else
+                        +hidden-field ( "memberNumber", "0" )
+                    if !meeting.online
                         +tel-field ( "telephone", __("Telephone"), values.telephone )
                     else
                         +hidden-field ( "telephone", "+15551234" )
@@ -89,32 +99,34 @@ block content
 
                 hr
 
-                if false
-                    h4 Details about your Entourage
+                if meeting.enablePartner
+                    h4= __("Details about your Entourage")
                     div#partnerDetails
                         //-+header( "Keine Begleitung" )
                         //-+mode( "ohne Begleitung", "partner", "Kein", 0.0 )
                         //-+header( "Verpflegung & Ausflüge für Begleitung" )
                         //-+mode( "mit Begleitung", "partner", "Partner", meeting.partnerComplete, meeting.partnerWithout0 )
-                        +text-field( "partnerName", "Name", values.partnerName )
-                        +text-field( "partnerAddress", "Address", values.partnerAddress )
-                        +checkbox-field( "partnerTour", "Interested in partner-track (sightseeing, see above)", values.partner.indexOf("YES") > 0 )
+                        +text-field( "partnerName", __("Name"), values.partnerName )
+                        +text-field( "partnerAddress", __("Address"), values.partnerAddress )
+                        if meeting.enablePartnerTrack
+                            +checkbox-field( "partnerTour", __("Interested in partner-track (sightseeing, see above)"), values.partner.indexOf("YES") > 0 )
 
                     hr
 
-                h4= __("Presentation")
-                p
-                    i= __("Note: you can change your presentation details in your")
-                        |  
-                        b= myName
-                        |  - 
-                        = __("section. Link will be provided in your registration email.")
-                div#presentation
-                    +text-field( "presentationTitle", __("Title"), values.presentationTitle )
-                    +textarea-field( "presentationDescription", __("Description ( about 5 sentences )"), values.presentationDescription )
-                    +text-field( "presentationLength", __("Length ( 45min default, shorter okay )"), values.presentationLength )
+                if meeting.enablePresentation
+                  h4= __("Presentation")
+                  p
+                      i= __("Note: you can change your presentation details in your")
+                          |  
+                          b= myName
+                          |  - 
+                          = __("section. Link will be provided in your registration email.")
+                  div#presentation
+                      +text-field( "presentationTitle", __("Title"), values.presentationTitle )
+                      +textarea-field( "presentationDescription", __("Description ( about 5 sentences )"), values.presentationDescription )
+                      +text-field( "presentationLength", __("Length ( 45min default, shorter okay )"), values.presentationLength )
 
-                hr
+                  hr
 
                 h4=__("Spam stop")
                 div#noSpam
