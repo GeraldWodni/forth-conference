@@ -82,7 +82,7 @@ block content
                     if meeting.enableMemberNumber
                         p
                             | Wenn Sie kein Mitglied sind, schreiben Sie bitte eine 0 als Mitgliedsnummer
-                        +text-field( "memberNumber", "Mitgliedsnummer", values.memberNumber )
+                        +text-field( "memberNumber", __("Member number"), values.memberNumber )
                     else
                         +hidden-field ( "memberNumber", "0" )
                     if !meeting.online
