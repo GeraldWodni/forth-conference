@@ -73,7 +73,7 @@ block content
                 p
                     = __("Please provide a correct email-address, we will keep it a secret")
                 div#details
-                    +text-field( "name", __("Name") + " *"), values.name )
+                    +text-field( "name", __("Name") + " *", values.name )
                     if !meeting.online
                         +text-field( "address", __("Address") + " *", values.address )
                     else
