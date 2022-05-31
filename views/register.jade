@@ -86,7 +86,7 @@ block content
                     else
                         +hidden-field ( "memberNumber", "0" )
                     if !meeting.online
-                        +tel-field ( "telephone", __("Telephone"), values.telephone )
+                        +tel-field ( "telephone", __("Telephone") + "*", values.telephone )
                     else
                         +hidden-field ( "telephone", "+15551234" )
                     +email-field( "email", __("Email") + " *", values.email )
