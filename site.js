@@ -426,8 +426,8 @@ module.exports = {
 	});
 
         /* render previous conferences */
-        k.router.get("/20[0-9]{2}", function( req, res, next ) {
-            const year = k.filters.uint( req.path );
+        k.router.get("/20[0-9]{2}(i[0-9]+)?", function( req, res, next ) {
+            const year = k.filters.id( req.path );
 
             k.hierarchy.readHierarchyTree( req.kern.website, "/views", { foldersOnly: false }, ( err, tree ) => {
                 if( err ) return next( err );
