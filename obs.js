@@ -17,7 +17,8 @@ module.exports = {
                 const daySessions = [];
                 for( let daySession of rootDaySessions )
                     while( daySession ) {
-                        daySessions.push( daySession );
+                        if( daySessions.indexOf( daySession ) == -1 )
+                            daySessions.push( daySession );
                         daySession = daySession.nextSession;
                     }
 
