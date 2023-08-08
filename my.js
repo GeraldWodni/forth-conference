@@ -105,7 +105,12 @@ module.exports = {
                     } });
                 console.log( "MEETINGS:", util.inspect( attendees, false, null, true ) );
             } catch( err ) {
-                return next( err );
+                switch( err.code ) {
+                    case 'ENOTFOUND':
+                        break;
+                    default:
+                        return next( err );
+                }
             }
             k.jade.render( req, res, "myConference", vals( req, Object.assign({ attendees }, values) ) );
         }
