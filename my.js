@@ -5,6 +5,7 @@ const md5 = require("md5");
 const util = require("util");
 const BbbApi = require("bbb-rooms");
 
+const bbbEnabled = process.env.BBB_ENABLED == "true";
 const bbbHost = process.env.BBB_HOST;
 const bbbApi = new BbbApi( bbbHost, process.env.BBB_SECRET );
 
@@ -97,13 +98,15 @@ module.exports = {
         async function renderMain( req, res, next, values ) {
             const attendees = {};
             try {
-                const meetings = (await bbbApi.getMeetings()).meetings;
-                for( const meeting of meetings )
-                    attendees[ meeting.meetingID ] = meeting.attendees.map( a => { return {
-                        name: a.fullName,
-                        avatarUrl: a.customdata.avatarURL,
-                    } });
-                console.log( "MEETINGS:", util.inspect( attendees, false, null, true ) );
+                if( bbbEnabled ) {
+                    const meetings = (await bbbApi.getMeetings()).meetings;
+                    for( const meeting of meetings )
+                        attendees[ meeting.meetingID ] = meeting.attendees.map( a => { return {
+                            name: a.fullName,
+                            avatarUrl: a.customdata.avatarURL,
+                        } });
+                    console.log( "MEETINGS:", util.inspect( attendees, false, null, true ) );
+                }
             } catch( err ) {
                 switch( err.code ) {
                     case 'ENOTFOUND':
