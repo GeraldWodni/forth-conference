@@ -4,7 +4,7 @@ kind: Pod
 spec:
   containers:
   - name: buildah
-    image: quay.io/buildah/stable:latest
+    image: quay.io/buildah/stable:v1.29.0
     command:
     - sleep
     args:
