@@ -60,7 +60,7 @@ block content
                         p!= marked( hotel.description )
                     if hotel.fullyBooked
                         .alert.alert-warning
-                            b Fully Booked
+                            b= __( "Fully Booked" )
                     else
                         each mode in hotel.modes
                             +mode( mode.name, "hotel", mode.value, mode.complete )
