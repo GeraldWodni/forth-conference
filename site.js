@@ -29,6 +29,9 @@ module.exports = {
 
         const pricesPath = k.hierarchy.lookupFile( k.website, `./${viewYearPrefix}/prices.js`);
         var prices = require( `../../${pricesPath}` );
+        if( !prices.hasOwnProperty("currency") )
+            prices.currency = "€";
+
         function updateDates() {
             prices.meeting.programActive = new Date() > new Date( prices.meeting.start || "2000-01-01" );
             prices.meeting.registrationActive = new Date() > new Date( prices.meeting.openRegistration || "2000-01-01" );
@@ -148,7 +151,15 @@ module.exports = {
                                 return next( err );
 
                             messages.push( { type: "success", title: __("Success"), text: prices.successTemplate({price}) } );
-                            k.jade.render( req, res, "register", vals( req, { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: false }) );
+                            k.jade.render( req, res, "register", vals( req, {
+                                formatNumber: formatNumber,
+                                meeting: prices.meeting,
+                                hotels: prices.hotels,
+                                values: values,
+                                messages: messages,
+                                currency: prices.currency,
+                                showForm: false,
+                            }) );
 
                             const text = prices.emailTemplate( { prices, values, price, website: k.website } );
 
@@ -168,7 +179,15 @@ module.exports = {
                     else {
                         /* replace string by array */
                         values.extraDays = extraDays;
-                        k.jade.render( req, res, "register", vals( req, { formatNumber: formatNumber, meeting: prices.meeting, hotels: prices.hotels, values: values, messages: messages, showForm: true }) );
+                        k.jade.render( req, res, "register", vals( req, {
+                            formatNumber: formatNumber,
+                            meeting: prices.meeting,
+                            hotels: prices.hotels,
+                            values: values,
+                            messages: messages,
+                            currency: prices.currency,
+                            showForm: true,
+                        }) );
                     }
                 });
             });
@@ -417,6 +436,7 @@ module.exports = {
                     conference: prices.conference,
                     myName: prices.myName,
                     year: prices.year,
+                    currency: prices.currency,
                     messages: [] } ) );
             });
         }
