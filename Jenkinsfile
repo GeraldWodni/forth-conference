@@ -9,6 +9,8 @@ spec:
     - sleep
     args:
     - 99d
+    securityContext:
+      privileged: true
     env:
       - name: REG_USERNAME
         valueFrom:
