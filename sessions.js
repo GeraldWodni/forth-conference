@@ -16,6 +16,7 @@ module.exports = {
                 date:       { text: "Date",         type: "date" }, /* todo: implement datetime */
                 time:       { text: "Time",         type: "text" }, /* todo: implement time */
                 pauseBefore:{ text: "Pause before", type: "number" },
+                onAir:      { text: "On Air",       type: "checkbox" },
                 previousSession: { text: "Previous session",        type: "foreign" },
             }
 
